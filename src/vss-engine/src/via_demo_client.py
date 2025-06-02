@@ -23,6 +23,7 @@ import gradio as gr
 import pkg_resources
 import uvicorn
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
 from client.rtsp_stream import build_rtsp_stream
 from client.summarization import build_summarization
@@ -36,6 +37,8 @@ enable_logs = True
 template_queries = {}
 appConfig = {}
 app = FastAPI()
+
+app.mount("/client/assets", StaticFiles(directory="client/assets"), name="client-assets")
 
 with tempfile.NamedTemporaryFile() as temp:
     temp.write(pkg_resources.resource_string(__name__, "client/assets/kaizen-theme.json"))
