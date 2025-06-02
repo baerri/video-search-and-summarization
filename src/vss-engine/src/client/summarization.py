@@ -240,7 +240,7 @@ async def close_asset(chatbot, question_textbox, video, media_ids, image_mode):
         gr.update(value=None),  # video
         gr.update(
             interactive=False,
-            value=f"Select/Upload {'image(s)' if image_mode else 'video'} to summarize",
+            value=f"요약을 위해 {'이미지' if image_mode else '비디오'} 업로드",
         ),  # summarize_button
         gr.update(interactive=True),  # chat_button
         None,  # output_alerts
@@ -703,17 +703,17 @@ async def summarize(
 
 
 CHUNK_SIZES = [
-    ("No chunking", 0),
-    ("5 sec", 5),
-    ("10 sec", 10),
-    ("20 sec", 20),
-    ("30 sec", 30),
-    ("1 min", 60),
-    ("2 min", 120),
-    ("5 min", 300),
-    ("10 min", 600),
-    ("20 min", 1200),
-    ("30 min", 1800),
+    ("분할 없음", 0),
+    ("5초", 5),
+    ("10초", 10),
+    ("20초", 20),
+    ("30초", 30),
+    ("1분", 60),
+    ("2분", 120),
+    ("5분", 300),
+    ("10분", 600),
+    ("20분", 1200),
+    ("30분", 1800),
 ]
 
 
@@ -808,7 +808,7 @@ async def video_changed(video, image_mode):
         return [
             gr.update(
                 interactive=False,
-                value=f"Select/Upload {'image(s)' if image_mode else 'video'} to summarize",
+                value=f"요약을 위해 {'이미지' if image_mode else '비디오'} 업로드",
             ),
             gr.update(value=0),
             gr.update(value=[["", "", "", ""]] * 10),
@@ -898,18 +898,18 @@ def build_summarization(args, app_cfg, logger_):
             dc_json_path = gr.Textbox(show_label=False, visible=False)
 
             with gr.Tabs(elem_id="sub-tabs"):
-                with gr.Tab("Prompt"):
+                with gr.Tab("프롬프트"):
                     if args.image_mode is False:
                         chunk_size = gr.Dropdown(
                             choices=CHUNK_SIZES,
-                            label="CHUNK SIZE",
+                            label="청크 크기",
                             value=DEFAULT_CHUNK_SIZE,
                             interactive=True,
                             visible=True,
                             elem_classes=["white-background", "bold-header"],
                         )
                     with gr.Accordion(
-                        label="PROMPT (OPTIONAL)",
+                        label="요약 프롬프트 (선택)",
                         elem_classes=["white-background", "bold-header"],
                         open=True,
                     ):
@@ -922,7 +922,7 @@ def build_summarization(args, app_cfg, logger_):
                             show_label=False,
                         )
                     with gr.Accordion(
-                        label="CAPTION SUMMARIZATION PROMPT (OPTIONAL)",
+                        label="캡션 요약 프롬프트 (선택)",
                         elem_classes=["white-background", "bold-header"],
                         open=False,
                     ):
@@ -935,7 +935,7 @@ def build_summarization(args, app_cfg, logger_):
                             show_label=False,
                         )
                     with gr.Accordion(
-                        label="SUMMARY AGGREGATION PROMPT (OPTIONAL)",
+                        label="요약 통합 프롬프트 (선택)",
                         elem_classes=["white-background", "bold-header"],
                         open=False,
                     ):
@@ -957,13 +957,13 @@ def build_summarization(args, app_cfg, logger_):
                         gr.Markdown(dummy_mr, visible=True)
 
                     with gr.Accordion(
-                        label="FILE SETTINGS",
+                        label="파일 설정",
                         elem_classes=["white-background", "bold-header"],
                         open=True,
                     ):
-                        chat_checkbox = gr.Checkbox(value=True, label="Enable Chat for the file")
+                        chat_checkbox = gr.Checkbox(value=True, label="이 파일에 대해 챗 기능 활성화")
 
-                        chat_history_checkbox = gr.Checkbox(value=True, label="Enable chat history")
+                        chat_history_checkbox = gr.Checkbox(value=True, label="챗 기록 저장 활성화")
 
                         enable_audio = gr.Checkbox(
                             value=False,
@@ -992,7 +992,7 @@ def build_summarization(args, app_cfg, logger_):
                             ),
                         )
 
-                with gr.Tab("Samples"):
+                with gr.Tab("샘플 예시"):
                     gr.Examples(
                         examples=[
                             [
@@ -1019,7 +1019,7 @@ def build_summarization(args, app_cfg, logger_):
                         elem_id="example",
                     )
 
-                with gr.Tab("Create Alerts"):
+                with gr.Tab("경고 생성"):
 
                     with gr.Row():
                         add_alert_btn = gr.Button(
@@ -1214,7 +1214,7 @@ def build_summarization(args, app_cfg, logger_):
 
             summarize_button = gr.Button(
                 interactive=False,
-                value=f"Select/Upload {'image(s)' if args.image_mode else 'video'} to summarize",
+                value=f"요약을 위해 {'이미지' if args.image_mode else '비디오'} 업로드",
                 variant="primary",
                 size="sm",
                 scale=1,
@@ -1223,7 +1223,7 @@ def build_summarization(args, app_cfg, logger_):
         with gr.Column(scale=3):
             with gr.Row(equal_height=True, elem_classes="align-right-row"):
                 close_asset_button = gr.Button(
-                    "Delete File",
+                    "파일 삭제",
                     variant="primary",
                     interactive=False,
                     size="sm",
@@ -1231,7 +1231,7 @@ def build_summarization(args, app_cfg, logger_):
                     elem_classes=["black-button"],
                 )
                 parameters_button = gr.Button(
-                    "Show Parameters",
+                    "파라미터 설정 보기",
                     variant="primary",
                     size="sm",  # Set the button size to small
                     scale=0.1,
@@ -1241,7 +1241,7 @@ def build_summarization(args, app_cfg, logger_):
                 with gr.Tab("CHAT"):
                     chatbot = gr.Chatbot(
                         [],
-                        label="RESPONSE",
+                        label="응답",
                         bubble_full_width=False,
                         avatar_images=(USER_AVATAR_ICON.name, CHATBOT_AVATAR_ICON.name),
                         height=550,
@@ -1250,7 +1250,7 @@ def build_summarization(args, app_cfg, logger_):
                     )
 
                     with gr.Accordion(
-                        "VIDEO EVENT SUMMARY",
+                        "비디오 이벤트 요약",
                         open=False,
                         elem_classes=["white-background", "bold-header"],
                         elem_id="video-timeline-container",
@@ -1261,27 +1261,27 @@ def build_summarization(args, app_cfg, logger_):
 
                     with gr.Row(equal_height=True, variant="default"):
                         question_textbox = gr.Textbox(
-                            label="Ask a question",
+                            label="질문을 입력하세요",
                             interactive=False,
                             scale=3,
                         )
                         with gr.Column(scale=1):
-                            ask_button = gr.Button("Ask", interactive=False)
+                            ask_button = gr.Button("질문하기", interactive=False)
                             with gr.Row():
                                 generate_scenario_highlight = gr.Button(
-                                    "Generate Scenario Highlight",
+                                    "시나리오 하이라이트 생성",
                                     interactive=False,
                                     scale=1,
                                     visible=not args.image_mode,
                                 )
                                 generate_highlight = gr.Button(
-                                    "Generate Highlight",
+                                    "하이라이트 생성",
                                     interactive=False,
                                     scale=1,
                                     visible=not args.image_mode,
                                 )
-                            reset_chat_button = gr.Button("Reset Chat", interactive=False)
-                with gr.Tab("ALERTS"):
+                            reset_chat_button = gr.Button("대화 초기화", interactive=False)
+                with gr.Tab("알림 목록"):
                     output_alerts = gr.TextArea(
                         interactive=False, max_lines=30, lines=30, show_label=False
                     )

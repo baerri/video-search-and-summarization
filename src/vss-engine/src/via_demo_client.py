@@ -139,12 +139,12 @@ def build_demo(args):
         gr.HTML(APP_BAR)
 
         with gr.Tabs(elem_id="via-tabs"):
-            with gr.Tab("VIDEO FILE SUMMARIZATION & Q&A"):
+            with gr.Tab("비디오 요약 및 질의응답"):
                 args.image_mode = False
                 build_summarization(args, appConfig, logger)
-            with gr.Tab("LIVE STREAM SUMMARIZATION"):
+            with gr.Tab("실시간 스트리밍 요약"):
                 build_rtsp_stream(args, appConfig, logger)
-            with gr.Tab("IMAGE FILE SUMMARIZATION & Q&A"):
+            with gr.Tab("이미지 요약 및 질의응답"):
                 args.image_mode = True
                 build_summarization(args, appConfig, logger)
 
