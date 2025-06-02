@@ -23,7 +23,7 @@ import aiohttp
 import gradio as gr
 import pkg_resources
 import yaml
-from gradio_videotimeline import VideoTimeline
+# from gradio_videotimeline import VideoTimeline
 
 from utils import MediaFileInfo
 
@@ -1255,8 +1255,8 @@ def build_summarization(args, app_cfg, logger_):
                         elem_classes=["white-background", "bold-header"],
                         elem_id="video-timeline-container",
                     ) as timeline_accordion:
-                        timeline = VideoTimeline(
-                            show_label=False, interactive=False, show_download_button=False
+                        timeline = gr.Video(
+                            label="Timeline Placeholder", interactive=False, visible=False
                         )
 
                     with gr.Row(equal_height=True, variant="default"):
